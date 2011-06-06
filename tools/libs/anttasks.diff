@@ -1,0 +1,45 @@
+diff --git a/anttasks/src/com/android/ant/AaptExecLoopTask.java b/anttasks/src/com/android/ant/AaptExecLoopTask.java
+index d7d53c9..6aaf9d4 100644
+--- a/anttasks/src/com/android/ant/AaptExecLoopTask.java
++++ b/anttasks/src/com/android/ant/AaptExecLoopTask.java
+@@ -21,6 +21,7 @@ import org.apache.tools.ant.Project;
+ import org.apache.tools.ant.Task;
+ import org.apache.tools.ant.taskdefs.ExecTask;
+ import org.apache.tools.ant.types.Path;
++import org.apache.tools.ant.types.Commandline;
+ 
+ import java.io.File;
+ import java.util.ArrayList;
+@@ -72,6 +73,7 @@ public final class AaptExecLoopTask extends Task {
+         }
+     }
+ 
++    private Commandline mCommandline = new Commandline();
+     private String mExecutable;
+     private String mCommand;
+     private boolean mForce = true; // true due to legacy reasons
+@@ -241,6 +243,13 @@ public final class AaptExecLoopTask extends Task {
+         return path;
+     }
+ 
++    /**
++     * Returns an object representing a nested <var>res</var> element.
++     */
++    public Commandline.Argument createArg() {
++        return mCommandline.createArgument();
++    }
++
+     /*
+      * (non-Javadoc)
+      *
+@@ -429,6 +438,10 @@ public final class AaptExecLoopTask extends Task {
+             task.createArg().setValue(mRFolder);
+         }
+ 
++        for(String arg : mCommandline.getArguments()){
++             task.createArg().setValue(arg);
++        }
++
+         // final setup of the task
+         task.setProject(taskProject);
+         task.setOwningTarget(getOwningTarget());

@@ -1,0 +1,1 @@
+python ./collect-src.py
